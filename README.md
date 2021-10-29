@@ -3,7 +3,7 @@ AutoPack
 通过Fastlane和NodeJS实现的自动打包工具
 
 -----------------
-### 统一修改项目前缀
+### 一键批量修改项目前缀
 ##### Path: 项目地址
 ##### Project: Scheme Name Project Name
 ##### old: 项目用的前缀
