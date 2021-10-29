@@ -25,6 +25,7 @@ platform :ios do
   pack_description = "{pack_description}" # 打包更新说明 蒲公英
 
   provision_path = "{provision_path}" # 需要替换的provision 文件目录路径
+  project_team_id = "{project_team_id}" # 需要替换的provision 文件目录路径
 
   lane :distribution_lane do
     gym(
@@ -59,6 +60,11 @@ platform :ios do
         # 打包配置，Debug，Release
         build_configuration:"Debug"
     )
+
+    # 更新项目团队
+    update_project_team(
+      teamid: "#{project_team_id}"
+      )
     
     gym(
       clean:true, # 是否清空以前的编译信息 true：是

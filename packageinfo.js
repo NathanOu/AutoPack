@@ -11,6 +11,7 @@ var project_name = "{project_name}" // Scheme Name
 var bundle_id = "pure.tuber.tools.os"
 var provision_name = "XC Wildcard Dev" // Provision Name
 var provision_path = "" // Provision 文件目录路径
+var project_team_id = "" // Team ID
 
 /////////////// 传递参数 /////////////
 
@@ -46,6 +47,7 @@ function replaceDatas(fastfilePath) {
     content = content.replace('{provision_name}', provision_name)
     content = content.replace('{pack_description}', pack_description)
     content = content.replace('{provision_path}', provision_path)
+    content = content.replace('{project_team_id}', project_team_id)
     console.log( "\n ======================================>" + 'File Content  : \n' + content + "\n ======================================>")
     fs.writeFileSync(fastfilePath, content)
     resolve(1)
