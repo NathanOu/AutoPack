@@ -14,6 +14,7 @@ make class path={Project Path} project={Project Name} old={Old Prefix} new={New 
 make pack path={Project Path} project={Project Name}
 
 ####打包需要配置packageinfo.js
+
 `
 var bundle_id = "你项目的Bundle ID"
 var provision_name = "匹配你项目的Provision Profile"
