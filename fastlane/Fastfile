@@ -1,0 +1,87 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Description of what the lane does"
+
+  time = Time.now.strftime("%Y-%m-%d %H:%M:%S")
+  project_name = "{project_name}"
+  bundle_id = "{bundle_id}" # pure.tuber.tools.os
+  provision_name = "{provision_name}" # XC Wildcard Dev
+  pack_description = "{pack_description}" # 打包更新说明 蒲公英
+
+  provision_path = "{provision_path}" # 需要替换的provision 文件目录路径
+
+  lane :distribution_lane do
+    gym(
+      clean:true, # 是否清空以前的编译信息 true：是
+      scheme: project_name, # 自己项目名称
+      workspace: "#{project_name}.xcworkspace", # 自己项目名称xcworkspace（使用cocoapods才会生成）
+      export_method:"app-store", #app-store,ad-hoc,enterprise,development
+      configuration:"Release",
+      output_directory:"./fastlane/build/Release", # 打包后的 ipa 文件存放的目录
+      export_xcargs: "-allowProvisioningUpdates", #访问钥匙串
+      output_name: "#{project_name}_#{time}.ipa",# ipa 文件名
+      silent:true,#隐藏没有必要的信息
+      export_options: {
+        export_method:"app-store",
+        provisioningProfiles: {
+        "#{bundle_id}" => "#{provision_name}",# bundleid，打包用的证书名字
+        }
+      }
+    )
+  end
+
+  lane :develop_lane do
+    # add actions here: https://docs.fastlane.tools/actions
+    #自增build号
+    #increment_build_number_in_plist(target: SCHEME)
+
+    # 打包之前跟新指定配置的描述文件
+    update_project_provisioning(
+        # 之前有sigh下载的描述文件存储路径
+        profile:"#{provision_path}",
+
+        # 打包配置，Debug，Release
+        build_configuration:"Debug"
+    )
+    
+    gym(
+      clean:true, # 是否清空以前的编译信息 true：是
+      scheme: project_name, # 自己项目名称
+      workspace: "#{project_name}.xcworkspace", # 自己项目名称xcworkspace（使用cocoapods才会生成）
+      export_method:"development", #app-store,ad-hoc,enterprise,development
+      configuration:"Debug",
+      output_directory:"./fastlane/build/develop", # 打包后的 ipa 文件存放的目录
+      export_xcargs: "-allowProvisioningUpdates", #访问钥匙串
+      output_name: "#{project_name}_#{time}.ipa",# ipa 文件名
+      silent:true,#隐藏没有必要的信息
+      export_options: {
+        export_method:"development",
+        provisioningProfiles: {
+        "#{bundle_id}" => "#{provision_name}",# bundleid，打包用的证书名字
+        }
+      }
+    )
+    
+    pgyer(
+      api_key: "e0ad02fb32aeaa650539806584442f6a", # 从蒲公英项目详情中获取的 apikey
+      user_key: "62642966e6f67b85c0aa96a159499281", # 从蒲公英项目详情中获取的 userkey
+      update_description: "测试自动打包上传" # 本次测试更新的文字说明（参数设置）
+    )
+  end
+end
