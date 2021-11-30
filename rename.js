@@ -85,8 +85,8 @@ function renameClasses(classes, oldpre, newpre) {
 
     var abReg = new RegExp(`(?<=([\\s\[\(\)"<,:\*/\\-\?\}\^\!\>\.]))${origin}(?=([A-Z]\\w+))`,'g')
 
-    // 带后缀的h m swift zip
-    let creghm = new RegExp(`(?<=([\\s\[\(\)"<,:\*/\\-\?\}\^=]))${origin}(?=([A-Z][\\w\+_]+\.(swift|zip|h|m|xib)(\\s|;|")))`, 'g')
+    // 带后缀的h m swift
+    let creghm = new RegExp(`(?<=([\\s\[\(\)"<,:\*/\\-\?\}\^=]))${origin}(?=([A-Z][\\w\+_]+\.(swift|h|m|xib)(\\s|;|")))`, 'g')
 
     // 类名的plist
     let plistreg = new RegExp(`(?<=([\>]))${origin}(?=([A-Z][\\w\+_]+))`, 'g')
@@ -100,8 +100,9 @@ function renameClasses(classes, oldpre, newpre) {
       let ispbxproj = /\.pbxproj$/.test(classFile)
       let isplist = /\.plist$/.test(classFile)
 
-      if (folder.indexOf('/Pods/') == -1 ) {
-        console.log('Replacing Content in : ' + classFile + '')        
+      if (folder.indexOf('/Pods/') == -1 && fileName.indexOf('.zip') == -1 ) {
+        console.log('Classes Replacing Content in : ' + classFile + '') 
+        console.log(' file name : ' + fileName + ' prefixed :' + prefixReg)       
         var content = fs.readFileSync(classFile, 'utf8')
 
         if (ispbxproj) {
