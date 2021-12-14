@@ -27,6 +27,19 @@ platform :ios do
   provision_path = "{provision_path}" # 需要替换的provision 文件目录路径
   project_team_id = "{project_team_id}" # 需要替换的provision 文件目录路径
 
+  pgy_app_url = "{pgy_app_url}" # 蒲公英的下载地址
+  pgy_qrcode = "{pgy_qrcode}" # 蒲公英的二维码地址
+
+  # 群1 
+  ding_talk_config1 = {
+    "ding_talk_url" => "https://oapi.dingtalk.com/robot/send?access_token=xxx",
+    "contacts" => ["xxx"],
+    "ding_talk_secret" => 'xxx'
+  }
+
+  # 指定钉钉群, 可指定多个
+  ding_talk_robots = [ding_talk_config1]
+
   lane :distribution_lane do
     gym(
       clean:true, # 是否清空以前的编译信息 true：是
@@ -46,6 +59,9 @@ platform :ios do
       }
     )
   end
+
+
+  time_now = Time.now.strftime(“%Y-%m-%d %H:%M:%S”)
 
   lane :develop_lane do
     # add actions here: https://docs.fastlane.tools/actions
@@ -89,5 +105,81 @@ platform :ios do
       user_key: "62642966e6f67b85c0aa96a159499281", # 从蒲公英项目详情中获取的 userkey
       update_description: "测试自动打包上传" # 本次测试更新的文字说明（参数设置）
     )
+
+    # ipa路径
+    app_patch = lane_context[SharedValues::IPA_OUTPUT_PATH]
+    # app版本号
+    app_version = get_ipa_info_plist_value(ipa: app_patch, key: "CFBundleShortVersionString")
+    # appbuild号
+    app_build_version = get_ipa_info_plist_value(ipa: app_patch, key: "CFBundleVersion")
+    # app名字
+    app_name    = get_ipa_info_plist_value(ipa: app_patch, key: "CFBundleDisplayName")
+    # 包大小
+    compressed_file_size = File.size(File.absolute_path(app_patch)).to_f / 2**20
+    formatted_file_size = '%.2f' % compressed_file_size
+    # 配置钉钉机器人消息内容
+    ding_talk_robots.each{|item|
+
+      contacts_format = ""
+      item["contacts"].each{|contact|
+        phone = ' @' + contact
+        contacts_format =  contacts_format + phone
+      }
+
+      ding_talk_update_text = <<-EOF
+#### #{app_name}iOS-内测版应用更新
+> 版本信息：#{app_version}(Build #{app_build_version})\n
+> 应用大小：#{formatted_file_size} MB\n
+> 更新时间：#{time_now}\n
+> 关键词：测试专用\n
+> 更新内容：#{pack_description}\n
+
+iPhone相机扫描二维码下载：
+![二维码](#{pgy_qrcode})\n
+[点我进入主页下载](#{pgy_app_url}) #{contacts_format}
+EOF
+  
+      markdown = {
+        msgtype: "markdown", 
+        markdown: {
+          title: "#{app_name} iOS内测更新", 
+          text: ding_talk_update_text,
+        },
+        at: {
+          atMobiles:item["contacts"],
+          isAtAll: false
+        }
+      }
+
+      ding_talk_url = item["ding_talk_url"]
+      ding_talk_secret = item["ding_talk_secret"]
+
+      #   计算签名
+      timestamp = DateTime.now.strftime('%Q') 
+      finaly_sign = ''
+      if ding_talk_secret
+        data = timestamp + "\n" + ding_talk_secret
+        digest = OpenSSL::Digest.new('SHA256')
+        sign_data = OpenSSL::HMAC.digest(digest, ding_talk_secret.force_encoding("UTF-8"), data.force_encoding("UTF-8"))
+        finaly_sign = Base64.encode64(sign_data).gsub("\n",'')
+        finaly_sign = CGI::escape(finaly_sign)
+      end
+
+      ding_talk_url = ding_talk_url + "&timestamp=#{timestamp}&sign=#{finaly_sign}"
+      puts ding_talk_url
+      uri = URI.parse(ding_talk_url)
+      https = Net::HTTP.new(uri.host, uri.port)
+      https.use_ssl = true
+
+      request = Net::HTTP::Post.new(uri.request_uri)
+      request.add_field('Content-Type', 'application/json')
+      request.body = markdown.to_json
+      puts request
+      response = https.request(request)
+      puts "------------------------------"
+      puts "Response #{response.code} #{response.message}: #{response.body}"
+    }
+
   end
+
 end

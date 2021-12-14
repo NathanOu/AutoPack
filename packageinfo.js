@@ -19,10 +19,14 @@ var project_name = ''
 var project_path = ''
 var pack_description = "功能性更新" // 打包更新说明 蒲公英
 
-module.exports.startToPack = function (path,name) {
+var pgy_app_url = "{pgy_app_url}" // 蒲公英的下载地址
+var pgy_qrcode = "{pgy_qrcode}" // 蒲公英的二维码地址
+
+module.exports.startToPack = function (path,name,desc) {
 
    project_path = path
    project_name = name
+   pack_description = desc
 
    var fPath = fastlanePath + 'fastlane'
    copyFolderRecursiveSync(fPath,project_path)
@@ -48,6 +52,8 @@ function replaceDatas(fastfilePath) {
     content = content.replace('{pack_description}', pack_description)
     content = content.replace('{provision_path}', provision_path)
     content = content.replace('{project_team_id}', project_team_id)
+    content = content.replace('{pgy_app_url}', pgy_app_url)
+    content = content.replace('{pgy_qrcode}', pgy_qrcode)
     console.log( "\n ======================================>" + 'File Content  : \n' + content + "\n ======================================>")
     fs.writeFileSync(fastfilePath, content)
     resolve(1)
