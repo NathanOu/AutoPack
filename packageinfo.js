@@ -23,11 +23,12 @@ var pgy_app_url = "{pgy_app_url}" // 蒲公英的下载地址
 var pgy_qrcode = "{pgy_qrcode}" // 蒲公英的二维码地址
 var app_branch_name = "" // 蒲公英的二维码地址
 
-module.exports.startToPack = function (path,name,desc) {
+module.exports.startToPack = function (path,name,desc,branch) {
 
    project_path = path
    project_name = name
    pack_description = desc
+   app_branch_name = branch
 
    var fPath = fastlanePath + 'fastlane'
    copyFolderRecursiveSync(fPath,project_path)
