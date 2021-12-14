@@ -20,9 +20,10 @@ pack:
 
 	@echo ${project}
 	@echo ${path}
+	@echo ${desc}
 
 	# 拷贝和替换fastfile参数
-	node start.js --type 1 --path ${path} --name ${project}
+	node start.js --type 1 --path ${path} --name ${project} --desc ${desc}
 
 	# 执行fastlane
 	cd ${path} && fastlane develop_lane
