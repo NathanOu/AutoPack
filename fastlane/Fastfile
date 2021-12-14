@@ -26,6 +26,7 @@ platform :ios do
 
   provision_path = "{provision_path}" # 需要替换的provision 文件目录路径
   project_team_id = "{project_team_id}" # 需要替换的provision 文件目录路径
+  app_branch_name = "{app_branch_name}" # 需要替换的provision 文件目录路径
 
   pgy_app_url = "{pgy_app_url}" # 蒲公英的下载地址
   pgy_qrcode = "{pgy_qrcode}" # 蒲公英的二维码地址
@@ -120,34 +121,29 @@ platform :ios do
     # 配置钉钉机器人消息内容
     ding_talk_robots.each{|item|
 
-      contacts_format = ""
-      item["contacts"].each{|contact|
-        phone = ' @' + contact
-        contacts_format =  contacts_format + phone
-      }
+      # contacts_format = ""
+      # item["contacts"].each{|contact|
+      #   phone = ' @' + contact
+      #   contacts_format =  contacts_format + phone
+      # }
 
       ding_talk_update_text = <<-EOF
 #### #{app_name}iOS-内测版应用更新
 > 版本信息：#{app_version}(Build #{app_build_version})\n
 > 应用大小：#{formatted_file_size} MB\n
-> 更新时间：#{time_now}\n
-> 关键词：测试专用\n
+> 打包分支：#{app_branch_name}\n
 > 更新内容：#{pack_description}\n
 
 iPhone相机扫描二维码下载：
 ![二维码](#{pgy_qrcode})\n
-[点我进入主页下载](#{pgy_app_url}) #{contacts_format}
+[点我进入主页下载](#{pgy_app_url})
 EOF
   
       markdown = {
         msgtype: "markdown", 
         markdown: {
           title: "#{app_name} iOS内测更新", 
-          text: ding_talk_update_text,
-        },
-        at: {
-          atMobiles:item["contacts"],
-          isAtAll: false
+          text: ding_talk_update_text
         }
       }
 

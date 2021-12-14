@@ -21,6 +21,7 @@ var pack_description = "功能性更新" // 打包更新说明 蒲公英
 
 var pgy_app_url = "{pgy_app_url}" // 蒲公英的下载地址
 var pgy_qrcode = "{pgy_qrcode}" // 蒲公英的二维码地址
+var app_branch_name = "" // 蒲公英的二维码地址
 
 module.exports.startToPack = function (path,name,desc) {
 
@@ -54,6 +55,7 @@ function replaceDatas(fastfilePath) {
     content = content.replace('{project_team_id}', project_team_id)
     content = content.replace('{pgy_app_url}', pgy_app_url)
     content = content.replace('{pgy_qrcode}', pgy_qrcode)
+    content = content.replace('{app_branch_name}', app_branch_name)
     console.log( "\n ======================================>" + 'File Content  : \n' + content + "\n ======================================>")
     fs.writeFileSync(fastfilePath, content)
     resolve(1)
