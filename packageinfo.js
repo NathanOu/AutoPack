@@ -8,7 +8,7 @@ var fs = require('fs')
 var fastlanePath = '' // 当前目录下
 
 var project_name = "{project_name}" // Scheme Name
-var bundle_id = "pure.tuber.tools.os"
+var bundle_id = ""
 var provision_name = "XC Wildcard Dev" // Provision Name
 var provision_path = "" // Provision 文件目录路径
 var project_team_id = "" // Team ID
@@ -23,12 +23,15 @@ var pgy_app_url = "{pgy_app_url}" // 蒲公英的下载地址
 var pgy_qrcode = "{pgy_qrcode}" // 蒲公英的二维码地址
 var app_branch_name = "" // 蒲公英的二维码地址
 
-module.exports.startToPack = function (path,name,desc,branch) {
+module.exports.startToPack = function (path,name,desc,branch,bd,pu,pc) {
 
    project_path = path
    project_name = name
    pack_description = desc
    app_branch_name = branch
+   bundle_id = bd
+   pgy_app_url = pu
+   pgy_qrcode = pc
 
    var fPath = fastlanePath + 'fastlane'
    copyFolderRecursiveSync(fPath,project_path)
