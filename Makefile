@@ -24,7 +24,7 @@ pack:
 	@echo ${branch}
 
 	# 拷贝和替换fastfile参数
-	node start.js --type 1 --path ${path} --name ${project} --desc ${desc} --branch ${branch}
+	node start.js --type 1 --path ${path} --name ${project} --desc ${desc} --branch ${branch} --bd ${bd}
 
 	# 执行fastlane
 	cd ${path} && fastlane develop_lane
