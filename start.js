@@ -9,6 +9,8 @@ var name = args.name
 var desc = args.desc
 var branch = args.branch
 var bd = args.bd
+var pu = args.pu
+var pc = args.pc
 
 if (type == 0) {
   // Rename
@@ -19,7 +21,7 @@ if (type == 0) {
 } else if (type == 1) { 
   // pack
   // 修改fast file
-  packageinfo.startToPack(path,name,desc,branch,bd)
+  packageinfo.startToPack(path,name,desc,branch,bd,pu,pc)
 }
 
 
