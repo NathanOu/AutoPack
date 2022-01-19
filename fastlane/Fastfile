@@ -31,6 +31,9 @@ platform :ios do
   pgy_app_url = "{pgy_app_url}" # 蒲公英的下载地址
   pgy_qrcode = "{pgy_qrcode}" # 蒲公英的二维码地址
 
+  pgy_api_key = "" 
+  pgy_user_key = "" 
+
   # 群1 
   ding_talk_config1 = {
     "ding_talk_url" => "https://oapi.dingtalk.com/robot/send?access_token=xxx",
@@ -102,8 +105,8 @@ platform :ios do
     )
     
     pgyer(
-      api_key: "e0ad02fb32aeaa650539806584442f6a", # 从蒲公英项目详情中获取的 apikey
-      user_key: "62642966e6f67b85c0aa96a159499281", # 从蒲公英项目详情中获取的 userkey
+      api_key: "#{pgy_api_key}", # 从蒲公英项目详情中获取的 apikey
+      user_key: "#{pgy_user_key}", # 从蒲公英项目详情中获取的 userkey
       update_description: "测试自动打包上传" # 本次测试更新的文字说明（参数设置）
     )
 
