@@ -9,10 +9,20 @@ echo "项目新名字 $3"
 
 # 更改所有的train
 cd $1
+
+# 移动Git
+mv .git ../.git
+mv .gitignore ../.gitignore
+
 export LC_CTYPE=C
 export LANG=C
 find ./ -type f -exec sed -i '' "s/$2/$3/g" {} \; 
 # | xargs sed -i "" "s/$2/$3/g"
+
+# 移动回来
+mv ../.git .git
+mv ../.gitignore .gitignore
+
 # 更改目录
 mkdir -p $3
 mv $2/* $3
