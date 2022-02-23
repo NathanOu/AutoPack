@@ -20,7 +20,7 @@ platform :ios do
 
   time = Time.now.strftime("%Y-%m-%d %H:%M:%S")
   project_name = "{project_name}"
-  bundle_id = "{bundle_id}" # pure.tuber.tools.os
+  bundle_id = "{bundle_id}" # test.ios
   provision_name = "{provision_name}" # XC Wildcard Dev
   pack_description = "{pack_description}" # 打包更新说明 蒲公英
 
