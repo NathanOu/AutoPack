@@ -41,6 +41,32 @@ var project_team_id = "项目对应的Team ID"
 bash ChangeProject.sh /Desktop/Project/ OLDProjectNew NEWProjectName
 ```
 
+-----------------
+### 环境依赖
+#### Home brew 用于安装依赖
+#### Install Homebrew
+```ruby
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+安装完成运行以下两行代码来引入brew命令
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/packer/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+```
+
+#### 脚本运行依赖Node 和 Yarn
+#### Install Node Yarn
+```ruby
+npm: brew install npm
+Yarn: brew install yarn
+```
+
+
+=============== M1 Pod Install =============
+```ruby
+sudo arch -x86_64 gem install ffi
+arch -x86_64 pod install
+```
+
+
 
 
 
