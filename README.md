@@ -1,5 +1,5 @@
 AutoPack
-==============
+==============Cancel changes
 通过Fastlane和NodeJS实现的自动打包工具
 
 -----------------
@@ -29,6 +29,16 @@ var bundle_id = "你项目的Bundle ID"
 var provision_name = "匹配你项目的Provision Profile"
 var provision_path = "替换项目的Provision Profile Path"
 var project_team_id = "项目对应的Team ID"
+```
+
+-----------------
+### 一键批量修改工程名字
+##### 第一个参数，项目路径
+##### 第二个参数，项目名字
+##### 第三个参数，更改成为的新名字
+用法
+```ruby
+bash ChangeProject.sh /Desktop/Project/ OLDProjectNew NEWProjectName
 ```
 
 
